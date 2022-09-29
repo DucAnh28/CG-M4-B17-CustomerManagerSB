@@ -16,6 +16,25 @@ function showAllCustomer() {
     })
 }
 showAllCustomer();
+function searchCustomer(){
+    let name = document.getElementById("nameSearch").value;
+    $.ajax({
+        type:"GET",
+        url:"http://localhost:8080/api/customers/search?search="+name,
+        success: function (data) {
+            console.log(data)
+            let ct = "";
+            for (let i = 0; i < data.content.length; i++) {
+                ct += `<tr><td>${data.content[i].id}</td>
+        <td>${data.content[i].firstName}</td>
+        <td>${data.content[i].lastName}</td>
+        <td><a href=""></a></td>
+        <td><a href="${data.content[i].id}" onclick="deleteCustomer(this)">Xoa</a></td></tr>`;
+            }
+            document.getElementById("tbody").innerHTML = ct;
+        }
+    })
+}
 
 function deleteCustomer(element){
     let id = element.getAttribute("href");
@@ -48,13 +67,8 @@ function createCustomer() {
         url: "http://localhost:8080/api/customers",
         success: function () {
             showAllCustomer();
+            $('#firstname').val("")
+            $('#lastname').val("")
         }
     })
 }
-
-$(document).ready(function () {
-    $("#submit").click(function () {
-        $("#firstname").clearData();
-        $("#lastname").attr("value","cal");
-    });
-});

@@ -3,6 +3,8 @@ package com.ducanh.customermanagersb.controller;
 import com.ducanh.customermanagersb.model.Customer;
 import com.ducanh.customermanagersb.service.customer.ICustomerService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -60,5 +62,17 @@ public class CustomerControllerRESTful {
         }
         customerService.remove(id);
         return new ResponseEntity<>(customerOptional.get(), HttpStatus.NO_CONTENT);
+    }
+
+    @GetMapping("/search")
+    public ResponseEntity<Page<Customer>> searchCustomer(@RequestParam Optional<String> search, Pageable pageable){
+        Page<Customer> page = customerService.findAll(pageable);
+        if (page.isEmpty()){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        }
+        if (search.isPresent()){
+            return new ResponseEntity<>(customerService.findAllByNameContaining(search.get(),pageable),HttpStatus.OK);
+        }
+        return new ResponseEntity<>(page,HttpStatus.OK);
     }
 }
