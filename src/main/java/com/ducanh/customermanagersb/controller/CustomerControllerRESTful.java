@@ -37,7 +37,7 @@ public class CustomerControllerRESTful {
         return new ResponseEntity<>(customerOptional.get(), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping()
     public ResponseEntity<Customer> saveCustomer(@RequestBody Customer customer) {
         customerService.save(customer);
         return new ResponseEntity<>(HttpStatus.CREATED);

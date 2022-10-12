@@ -8,5 +8,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ICustomerRepository extends PagingAndSortingRepository<Customer,Long> {
-    Page<Customer> findCustomerByFirstNameContaining(String firstname, Pageable pageable);
+    Page<Customer> findCustomerByFirstName(String firstname, Pageable pageable);
+
 }
